@@ -1,0 +1,538 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color: #000000;
+    overflow: hidden;
+    min-height: 100vh;
+}
+
+/* =========================================
+   2. BACKGROUND VIDEOS & OVERLAYS
+========================================= */
+#homebgvideo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    z-index: 0;
+}
+
+#gamebgvideo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    z-index: 0;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35); 
+    z-index: 1;
+}
+
+.gameoverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35); 
+    z-index: 1;
+}
+
+/* =========================================
+   3. HOME SCREEN SETTINGS
+========================================= */
+#homescreen {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    display: block; 
+}
+
+.home-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: min(540px, 92vw);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 40px;
+    
+    /* White Glass Effect */
+    background: rgba(255, 255, 255, 0.05); 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+    border-radius: 28px;
+}
+
+.home-card h1 {
+    color: #ffd54f;
+    font-size: 58px;
+    font-weight: 900;
+    letter-spacing: 5px;
+    text-shadow: 0 0 15px rgba(255, 213, 79, 0.5);
+    text-transform: uppercase;
+}
+
+#tagline {
+    color: #e0e0e0;
+    font-size: 16px;
+    letter-spacing: 3px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+#playername {
+    width: 100%;
+    height: 56px;
+    padding: 0 20px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-size: 18px;
+    outline: none;
+    transition: 0.3s;
+}
+
+#playername::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#playername:focus {
+    border-color: #3ddcff;
+    box-shadow: 0 0 18px rgba(61, 220, 255, 0.4);
+    background: rgba(255, 255, 255, 0.12);
+}
+
+#startbtn {
+    width: 100%;
+    height: 56px;
+    border: none;
+    border-radius: 14px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #5a00ff, #a23cff);
+    transition: 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(90, 0, 255, 0.3);
+}
+
+#startbtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(162, 60, 255, 0.5);
+}
+
+/* Home Screen Rules */
+#rules {
+    width: 100%;
+    padding: 25px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#rules h2 {
+    text-align: center;
+    color: #3ddcff;
+    font-size: 24px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px rgba(61, 220, 255, 0.3);
+}
+
+#rules ul {
+    list-style: none;
+}
+
+#rules li {
+    position: relative;
+    padding-left: 20px;
+    margin: 12px 0;
+    color: #f2f2f2;
+    line-height: 1.5;
+    font-size: 15px;
+}
+
+#rules li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #FFD54F;
+    font-size: 20px;
+    top: -2px;
+}
+
+.luck {
+    text-align: center;
+    margin-top: 20px;
+    color: #ffd54f;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+
+/* =========================================
+   4. GAME SCREEN MAIN LAYOUT
+========================================= */
+#gamescreen {
+    display: none;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.gamecontainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1500px;
+    height: 100vh;
+    margin: 0 auto;
+    padding: 30px 40px;
+    gap: 40px;
+}
+
+
+/* =========================================
+   5. GAME SCREEN: LEFT PANEL (Question Area)
+========================================= */
+.leftpanel {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-top: 45px; 
+    
+    /* White Glass Effect */
+    background: rgba(255, 255, 255, 0.05); 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+    border-radius: 28px;
+    padding: 60px 40px 40px; 
+}
+
+
+/* =========================================
+   6. TIMER
+========================================= */
+.timersection {
+    position: absolute;
+    top: -45px; 
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+}
+
+.timerline {
+    display: flex; 
+    justify-content: center;
+    width: 100%;
+}
+
+#timer {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: rgba(10, 10, 20, 0.6); 
+    color: #fff; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 38px;
+    font-weight: 700;
+    position: relative;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+}
+
+#timer::before {
+    content: "";
+    position: absolute;
+    inset: -4px; 
+    border-radius: 50%;
+    background: linear-gradient(180deg, #3ddcff, #a23cff);
+    z-index: -1;
+}
+
+
+/* =========================================
+   7. QUESTION TEXT
+========================================= */
+#quetiondiv {
+    width: 100%;
+    background: transparent; 
+    border: none;
+    box-shadow: none;
+    padding: 10px 20px 30px; 
+    text-align: center;
+    min-height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#question {
+    color: #ffffff;
+    font-size: 26px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    line-height: 1.5;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+
+/* =========================================
+   8. OPTIONS BUTTONS
+========================================= */
+#optiondiv {
+    width: 100%;
+    gap: 15px;
+    display: none; 
+}
+
+#optiondiv[style*="display: block"] {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+}
+
+#optiondiv button {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 14px;
+    padding: 22px 25px;
+    color: #ffffff;
+    font-size: 18px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+#optiondiv button:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #3ddcff;
+    box-shadow: 0 0 20px rgba(61, 220, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+#optiondiv button:disabled {
+    cursor: not-allowed;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+
+/* =========================================
+   9. LOCK ANSWER BUTTON
+========================================= */
+.buttonbox {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+#lockbtn {
+    width: 100%;
+    background: linear-gradient(90deg, #ffb300, #ff8f00);
+    border: none;
+    border-radius: 14px;
+    padding: 18px 0;
+    color: #000;
+    font-size: 20px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    box-shadow: 0 8px 25px rgba(255, 179, 0, 0.4);
+}
+
+#lockbtn:disabled {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.4);
+    box-shadow: none;
+}
+
+#lockbtn:hover:not(:disabled) {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 10px 30px rgba(255, 179, 0, 0.6);
+}
+
+
+/* =========================================
+   10. GAME SCREEN: RIGHT PANEL (Prize Ladder)
+========================================= */
+.rightpanel {
+    width: 320px; 
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    padding: 20px 0;
+}
+
+.slab {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    
+    /* White Glass Effect */
+    background: rgba(255, 255, 255, 0.05); 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+    border-radius: 28px;
+}
+
+.slab h2 {
+    text-align: center;
+    color: #FFD54F;
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    position: relative;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(255,213,79,0.3);
+}
+
+.slab h2::before, .slab h2::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40px;
+    height: 2px;
+    background: #FFD54F;
+}
+.slab h2::before { left: 0; }
+.slab h2::after { right: 0; }
+
+.slab > div {
+    flex: 1; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    color: #e0e0e0;
+    font-size: 17px;
+    font-weight: 500;
+    border-radius: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    transition: 0.3s;
+}
+
+.slab > div:hover {
+    background: rgba(255,255,255,0.08);
+}
+
+.slab span:first-child { 
+    font-weight: 700; 
+    color: #fff;
+}
+.slab span:last-child { 
+    font-weight: 600; 
+    color: #FFD54F;
+}
+
+.safe {
+    background: rgba(61, 220, 255, 0.15) !important;
+    border: 1px solid rgba(61, 220, 255, 0.4) !important;
+}
+
+.safe span { 
+    color: #3ddcff !important; 
+    font-weight: bold; 
+}
+
+.activelevel {
+    background: linear-gradient(90deg, #ffb300, #ffd54f) !important;
+    color: #000 !important;
+    border: none !important;
+    box-shadow: 0 0 15px rgba(255, 213, 79, 0.5);
+}
+.activelevel span { 
+    color: #000 !important; 
+}
+
+
+/* =========================================
+   11. Responsive
+========================================= */
+@media(max-width: 1024px) {
+    .home-card {
+        width: 94%;
+        padding: 30px 20px;
+    }
+    
+    .home-card h1 {
+        font-size: 46px;
+    }
+
+    .gamecontainer {
+        flex-direction: column;
+        padding: 20px;
+        height: auto; 
+        min-height: 100vh;
+    }
+    
+    #gamescreen {
+        height: auto;
+        overflow: auto;
+    }
+    
+    .leftpanel {
+        margin-top: 60px;
+    }
+    
+    .rightpanel {
+        width: 100%;
+        max-width: 500px;
+        height: 600px; 
+    }
+    
+    #optiondiv[style*="display: block"] {
+        grid-template-columns: 1fr;
+    }
+}
